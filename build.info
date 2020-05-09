@@ -1,0 +1,15 @@
+{
+    "projectname": "sim",
+    "builddir": "build.dir",
+    "flags": "-std=c++17 -g -Wall -Werror",
+    "targets": [
+        {
+            "name": "sim",
+            "type": "executable",
+            "srcs": [ "src/*.cpp" ],
+            "include_dirs": [ "src" ],
+            "libraries": [ "sfml", "pthread" ]
+        }
+    ]
+}
+
