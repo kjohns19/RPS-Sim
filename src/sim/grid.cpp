@@ -80,7 +80,7 @@ void Grid::updateRandomCell(Random &random)
     {
         // exchange
         setCell(x, y, neighborCell);
-        setCell(x, y, cell);
+        setCell(neighborX, neighborY, cell);
     }
 }
 
