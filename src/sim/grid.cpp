@@ -28,9 +28,21 @@ void Grid::setCell(int x, int y, Cell cell)
     d_display->update(x, y, cell.color());
 }
 
-void Grid::draw(sf::RenderTarget &target) const
+void Grid::draw(sf::RenderTarget &target)
 {
+    std::lock_guard<std::mutex> guard(d_updateMutex);
     d_display->draw(target);
+}
+
+void Grid::iterate(Random &random)
+{
+    int count = 50;
+    for (int i = 0; i < d_width * d_height / count; i++)
+    {
+        std::lock_guard<std::mutex> guard(d_updateMutex);
+        for (int j = 0; j < count; j++)
+            updateRandomCell(random);
+    }
 }
 
 void Grid::updateRandomCell(Random &random)
