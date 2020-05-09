@@ -22,8 +22,7 @@ int main(int argc, char *argv[])
 
     std::atomic<bool> done(false);
     std::thread updateThread([&grid, &random, &done]() {
-        int iteration = 0;
-        while (1)
+        for (int iteration = 0;; iteration++)
         {
             auto start = std::chrono::high_resolution_clock::now();
             grid.iterate(random);
@@ -32,7 +31,6 @@ int main(int argc, char *argv[])
             if (done)
                 break;
             std::cout << iteration << std::endl;
-            iteration++;
             std::cout << (diff.count() / static_cast<double>(width * height)) << std::endl;
         }
     });
