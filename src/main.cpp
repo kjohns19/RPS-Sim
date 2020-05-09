@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(sf::VideoMode(width, height), "Simulator");
     window.setFramerateLimit(30);
 
-    sim::Random random;
+    sim::Random random(0);
     sim::Grid grid(width, height);
     grid.fillRandom(random, 10000);
 
