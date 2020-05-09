@@ -4,7 +4,8 @@
 
 namespace sim {
 
-Grid::Grid(int width, int height) : d_cells(width * height), d_width(width), d_height(height)
+Grid::Grid(int width, int height)
+    : d_updatePos(0), d_cells(width * height), d_width(width), d_height(height)
 {
     d_display = std::make_unique<GridDisplay>(*this);
 }
@@ -25,24 +26,44 @@ Cell Grid::getCell(int x, int y) const
 void Grid::setCell(int x, int y, Cell cell)
 {
     d_cells[index(x, y)] = cell;
-    d_display->update(x, y, cell.color());
+    d_updates[d_updatePos] = {x, y, cell.color()};
+    if (++d_updatePos == UPDATE_SIZE)
+        commitUpdates();
 }
 
 void Grid::draw(sf::RenderTarget &target)
 {
-    std::lock_guard<std::mutex> guard(d_updateMutex);
+    applyUpdates();
     d_display->draw(target);
+}
+
+void Grid::commitUpdates()
+{
+    if (d_updates.empty())
+        return;
+    {
+        std::lock_guard<std::mutex> guard(d_updateMutex);
+        d_allUpdates.insert(d_allUpdates.end(), d_updates.begin(), d_updates.begin() + d_updatePos);
+    }
+    d_updatePos = 0;
+}
+
+void Grid::applyUpdates()
+{
+    std::vector<UpdateData> updates;
+    {
+        std::lock_guard<std::mutex> guard(d_updateMutex);
+        updates = std::move(d_allUpdates);
+    }
+    for (auto &update : updates)
+        d_display->update(update.x, update.y, update.color);
 }
 
 void Grid::iterate(Random &random)
 {
-    int count = 50;
-    for (int i = 0; i < d_width * d_height / count; i++)
-    {
-        std::lock_guard<std::mutex> guard(d_updateMutex);
-        for (int j = 0; j < count; j++)
-            updateRandomCell(random);
-    }
+    for (int i = 0; i < d_width * d_height; i++)
+        updateRandomCell(random);
+    commitUpdates();
 }
 
 void Grid::updateRandomCell(Random &random)
