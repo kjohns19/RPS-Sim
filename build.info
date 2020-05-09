@@ -1,7 +1,7 @@
 {
     "projectname": "sim",
     "builddir": "build.dir",
-    "flags": "-std=c++17 -g -Wall -Werror",
+    "flags": "-std=c++17 -O3 -Wall -Werror",
     "targets": [
         {
             "name": "sim",
