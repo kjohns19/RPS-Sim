@@ -132,6 +132,12 @@ void Grid::fillRandom(Random &random, int count)
         setCell(x, y, Cell(random.randInt(1, 3)));
 }
 
+void Grid::save(const std::string &filename) const
+{
+    std::lock_guard<std::mutex> guard(d_updateMutex);
+    d_display->save(filename);
+}
+
 int Grid::index(int x, int y) const
 {
     return y * d_width + x;

@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <string>
+
 namespace sim {
 
 class Grid;
@@ -17,6 +19,8 @@ class GridDisplay
     void draw(sf::RenderTarget &target);
 
     void update(int x, int y, sf::Color color);
+
+    void save(const std::string &filename) const;
 
   private:
     sf::Image d_image;

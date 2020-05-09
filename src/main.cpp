@@ -6,7 +6,9 @@
 
 #include <atomic>
 #include <chrono>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <thread>
 
 int main(int argc, char *argv[])
@@ -31,7 +33,13 @@ int main(int argc, char *argv[])
             if (done)
                 break;
             std::cout << iteration << std::endl;
-            std::cout << (diff.count() / static_cast<double>(width * height)) << std::endl;
+            if (iteration % 10 == 0)
+            {
+                std::ostringstream ss;
+                ss << "images/img" << std::setfill('0') << std::setw(4) << iteration / 10 << ".png";
+                std::cout << "Saving " << ss.str() << std::endl;
+                grid.save(ss.str());
+            }
         }
     });
 

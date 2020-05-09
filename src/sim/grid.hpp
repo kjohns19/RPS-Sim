@@ -11,6 +11,7 @@
 #include <array>
 #include <memory>
 #include <mutex>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -33,6 +34,8 @@ class Grid
 
     void fillRandom(Random &random, int count);
 
+    void save(const std::string &filename) const;
+
   private:
     static constexpr int UPDATE_SIZE = 50;
 
@@ -52,7 +55,7 @@ class Grid
         sf::Color color;
     };
 
-    std::mutex d_updateMutex;
+    mutable std::mutex d_updateMutex;
     std::array<UpdateData, UPDATE_SIZE> d_updates;
     int d_updatePos;
 

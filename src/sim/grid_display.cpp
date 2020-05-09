@@ -31,4 +31,9 @@ void GridDisplay::update(int x, int y, sf::Color color)
     d_image.setPixel(x, y, color);
 }
 
+void GridDisplay::save(const std::string &filename) const
+{
+    d_image.saveToFile(filename);
+}
+
 }  // close namespace sim
