@@ -127,9 +127,15 @@ void Grid::fillRandom(Random &random, int count)
     std::vector<std::pair<int, int>> fillCoords;
     std::sample(
         coords.begin(), coords.end(), std::back_inserter(fillCoords), count, random.generator());
+    std::shuffle(fillCoords.begin(), fillCoords.end(), random.generator());
 
-    for (auto [x, y] : fillCoords)
-        setCell(x, y, Cell(random.randInt(1, Cell::CELL_TYPES)));
+    // Ensure roughly equal amounts of each cell type
+    for (size_t i = 0; i < fillCoords.size(); i++)
+    {
+        int cellType = i * Cell::CELL_TYPES / fillCoords.size() + 1;
+        auto [x, y] = fillCoords[i];
+        setCell(x, y, Cell(cellType));
+    }
 }
 
 void Grid::save(const std::string &filename) const
