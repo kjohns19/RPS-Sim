@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <atomic>
-#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -26,10 +25,7 @@ int main(int argc, char *argv[])
     std::thread updateThread([&grid, &random, &done]() {
         for (int iteration = 0;; iteration++)
         {
-            auto start = std::chrono::high_resolution_clock::now();
             grid.iterate(random);
-            auto end = std::chrono::high_resolution_clock::now();
-            auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
             if (done)
                 break;
             std::cout << iteration << std::endl;
