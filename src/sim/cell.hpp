@@ -8,6 +8,8 @@ namespace sim {
 class Cell
 {
   public:
+    static constexpr int CELL_TYPES = 3;
+
     Cell() : d_value(0) {}
     explicit Cell(unsigned char value) : d_value(value) {}
 

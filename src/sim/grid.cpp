@@ -100,7 +100,7 @@ void Grid::updateRandomCell(Random &random)
     {
         // selection
         // 1 kills 2, 2 kills 3, 3 kills 1
-        if (!neighborCell.empty() && (cell.value() % 3) + 1 == neighborCell.value())
+        if (!neighborCell.empty() && (cell.value() % Cell::CELL_TYPES) + 1 == neighborCell.value())
             setCell(neighborX, neighborY, Cell());
     }
     else if (actionValue < selectionRate + reproduceRate)
@@ -129,7 +129,7 @@ void Grid::fillRandom(Random &random, int count)
         coords.begin(), coords.end(), std::back_inserter(fillCoords), count, random.generator());
 
     for (auto [x, y] : fillCoords)
-        setCell(x, y, Cell(random.randInt(1, 3)));
+        setCell(x, y, Cell(random.randInt(1, Cell::CELL_TYPES)));
 }
 
 void Grid::save(const std::string &filename) const

@@ -1,5 +1,7 @@
 #include <sim/cell.hpp>
 
+#include <iterator>
+
 namespace sim {
 
 sf::Color Cell::color() const
@@ -10,6 +12,7 @@ sf::Color Cell::color() const
         sf::Color::Yellow,
         sf::Color::Blue,
     };
+    static_assert(std::size(s_colors) == CELL_TYPES + 1);
     return s_colors[d_value];
 }
 
